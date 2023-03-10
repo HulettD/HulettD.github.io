@@ -18,21 +18,47 @@
 		crossorigin="anonymous"></script>
 	<script>
 		document.addEventListener("DOMContentLoaded", function (e) {
+			// TODO: Utilize localStorage to persist theme across pages
+			localStorage.setItem("theme", "dark");
 			const root = document.getElementById("root");
 			const themeToggle = document.getElementById("theme-toggle");
 			const themeIcon = themeToggle.firstElementChild;
-			// TODO: Utilize localStorage to persist theme across pages
-			themeToggle.addEventListener("click", function(e) {
-				const isDark = document.getElementById("root").getAttribute("data-bs-theme") == "dark";
-				if (isDark) {
-					themeToggle.classList.replace("btn-dark", "btn-light");
+			const lightMode = document.getElementById("light-mode");
+			const darkMode = document.getElementById("dark-mode");
+			function toggleTheme (setLight, setLocalStorage) {
+				if (setLight) {
 					themeIcon.classList.replace("fa-sun", "fa-moon");
 					root.setAttribute("data-bs-theme", "light");
 				} else {
-					themeToggle.classList.replace("btn-light", "btn-dark");
 					themeIcon.classList.replace("fa-moon", "fa-sun");
 					root.setAttribute("data-bs-theme", "dark");
 				}
+				if (setLocalStorage)
+					setLight ? localStorage.setItem("theme", "light") : localStorage.setItem("theme", "dark");
+			}
+			document.getElementById("theme-toggle").addEventListener("click", function (e) {
+				const isDark = document.getElementById("root").getAttribute("data-bs-theme") == "dark";
+				toggleTheme(isDark, true);
+			});
+			lightMode.addEventListener("click", function (e) {
+				toggleTheme(true, true);
+			});
+			lightMode.addEventListener("mouseover", function (e) {
+				toggleTheme(true, false);
+			});
+			lightMode.addEventListener("mouseout", function (e) {
+				const setLight = localStorage.getItem("theme") == "light";
+				toggleTheme(setLight, false);
+			});
+			darkMode.addEventListener("click", function (e) {
+				toggleTheme(false, true);
+			});
+			darkMode.addEventListener("mouseover", function (e) {
+				toggleTheme(false, false);
+			});
+			darkMode.addEventListener("mouseout", function (e) {
+				const setLight = localStorage.getItem("theme") == "light";
+				toggleTheme(setLight, false);
 			});
 		});
 	</script>
@@ -87,7 +113,16 @@
 	<nav class="navbar bg-body-tertiary mb-4">
 		<div class="container-fluid">
 			<span class="navbar-brand mb-0 h1">464 Course Project</span>
-			<button id="theme-toggle" class="btn btn-dark"><i class="fa-solid fa-fw fa-sun"></i></button>
+			<div class="btn-group dropstart">
+				<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+					<span class="visually-hidden">Toggle Dropdown</span>
+				</button>
+				<button id="theme-toggle" type="button" class="btn btn-outline-secondary"><i class="fa-solid fa-fw fa-sun"></i></button>
+				<ul class="dropdown-menu">
+				  <li><a id="light-mode" class="dropdown-item" href="#">Light mode</a></li>
+				  <li><a id="dark-mode" class="dropdown-item" href="#">Dark mode</a></li>
+				</ul>
+			  </div>
 		</div>
 	</nav>
 	<header class="container-fluid px-5 mb-5 text-center">
