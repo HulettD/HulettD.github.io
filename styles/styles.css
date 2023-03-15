@@ -1,0 +1,10 @@
+body {
+	/* Height of navbar */
+	padding-top: 56.5px;
+}
+
+datalist.range-values {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
