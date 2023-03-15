@@ -1,6 +1,4 @@
 document.addEventListener("navbar-loaded", function (e) {
-	// TODO: Utilize localStorage to persist theme across pages
-	localStorage.setItem("theme", "dark");
 	const root = document.getElementById("root");
 	const themeToggle = document.getElementById("theme-toggle");
 	const themeIcon = themeToggle.firstElementChild;
@@ -14,6 +12,9 @@ document.addEventListener("navbar-loaded", function (e) {
 		}
 		if (setLocalStorage)
 			setLight ? localStorage.setItem("theme", "light") : localStorage.setItem("theme", "dark");
+	}
+	if (localStorage.getItem("theme") === "light") {
+		toggleTheme(true, false);
 	}
 	themeToggle.addEventListener("click", function (e) {
 		const isDark = document.getElementById("root").getAttribute("data-bs-theme") == "dark";
